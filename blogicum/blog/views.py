@@ -5,47 +5,37 @@ from datetime import datetime
 
 # Create your views here.
 def index(request):
-    template_name = 'blog/index.html'
+    template_name = "blog/index.html"
     post_list = Post.objects.filter(
-        is_published=True, 
-        category__is_published=True,
-        pub_date__lte=datetime.now())[0:5]
+        is_published=True, category__is_published=True, pub_date__lte=datetime.now()
+    )[0:5]
 
-    context = {
-        'post_list': post_list
-    }
+    context = {"post_list": post_list}
     return render(request, template_name, context)
 
 
 def post_detail(request, post_id):
-    template_name = 'blog/detail.html'
+    template_name = "blog/detail.html"
     post = get_object_or_404(
-        Post, 
+        Post,
         id=post_id,
         is_published=True,
         pub_date__lte=datetime.now(),
-        category__is_published=True)
+        category__is_published=True,
+    )
 
-    context = {
-        'post': post
-    }
+    context = {"post": post}
 
     return render(request, template_name, context)
 
 
 def category_posts(request, category_slug):
-    template_name = 'blog/category.html'
-    category = get_object_or_404(Category, slug=category_slug,
-                                 is_published=True)
+    template_name = "blog/category.html"
+    category = get_object_or_404(Category, slug=category_slug, is_published=True)
 
     post_list = Post.objects.filter(
-        category=category,
-        is_published=True,
-        pub_date__lte=datetime.now()
+        category=category, is_published=True, pub_date__lte=datetime.now()
     )
 
-    context = {
-        'category': category,
-        'post_list': post_list
-    }
+    context = {"category": category, "post_list": post_list}
     return render(request, template_name, context)
