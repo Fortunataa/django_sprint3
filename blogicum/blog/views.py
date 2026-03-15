@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import Http404
 from blog.models import Category, Post
 from datetime import datetime
 
@@ -22,7 +21,7 @@ def post_detail(request, post_id):
     template_name = 'blog/detail.html'
     post = get_object_or_404(
         Post, 
-        id=post_id, 
+        id=post_id,
         is_published=True,
         pub_date__lte=datetime.now(),
         category__is_published=True)
